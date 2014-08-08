@@ -1,5 +1,8 @@
 # このアプリは何？
 練習用のVRアプリケーション．Unity Proを用いて作成．
+現状，Leap motionをつかって，Unity-chanの手を自分の手のごとく操れるだけのアプリ
+## デモ
+[Vineに飛びます](https://vine.co/v/MV1ZiJ0QiaA)
 
 ##動作上の注意
 Unity-ChanのアセットとLeap motion，Oculus Riftがあればこのプログラムを使う事ができる．
