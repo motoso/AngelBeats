@@ -9,6 +9,7 @@ public class IKCtrl4LeapMotion : MonoBehaviour {
 	protected int isEmbarrassedId;
 	protected float IKGoalPosition = 0.0f;
 	public bool ikActive = false;
+	public float detectDistance = 1.0f;
 
 
 	
@@ -39,24 +40,32 @@ public class IKCtrl4LeapMotion : MonoBehaviour {
 				// GameObject hand = GameObject.Find("palm");
 
 				if(hand){
-					Transform rightHandObj = hand.transform;
+					// 自分手が近くに来たときにのみ手を握ってくれる
+					Vector3 unityChanPos = animator.bodyPosition;
+					Vector3 myHandPos = hand.transform.position;
+					float distanceTillUC = Vector3.Distance(unityChanPos, myHandPos);
+					Debug.Log("distanceTillUC: " + distanceTillUC);					
+
+					if(distanceTillUC < detectDistance){
+						Transform rightHandObj = hand.transform;
 					// Debug.Log(GameObject.Find("SkeletalHand(Clone)/palm"));
 					// Debug.Log("x" + hand.transform.position.x);
 
                     //右手のweight = 1.0 は位置や回転が目標物に設定します（キャラクターが握りたい場所）
-					animator.SetIKPositionWeight(AvatarIKGoal.RightHand,IKGoalPosition);
-					animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1.0f);
+						animator.SetIKPositionWeight(AvatarIKGoal.RightHand,IKGoalPosition);
+						animator.SetIKRotationWeight(AvatarIKGoal.RightHand,1.0f);
 
 					// ゆっくり近づける
-					if(IKGoalPosition < 1.0f){
-						IKGoalPosition += 0.005f;
-					}
+						if(IKGoalPosition < 1.0f){
+							IKGoalPosition += 0.005f;
+						}
 
 			        //右手の位置および回転を外部オブジェクトの位置に設定する
-					if(rightHandObj != null) {
-						animator.SetIKPosition(AvatarIKGoal.RightHand,rightHandObj.position);
-						animator.SetIKRotation(AvatarIKGoal.RightHand,rightHandObj.rotation);
-					}					
+						if(rightHandObj != null) {
+							animator.SetIKPosition(AvatarIKGoal.RightHand,rightHandObj.position);
+							animator.SetIKRotation(AvatarIKGoal.RightHand,rightHandObj.rotation);
+						}					
+					}
 				}else{
 					//手がなくなったらゆっくり近づけるパラメタを初期化
 					IKGoalPosition = 0.0f;
